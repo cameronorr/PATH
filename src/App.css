@@ -74,6 +74,14 @@ img {
   background-color: rgb(244, 242, 239);
 }
 
+.card-small {
+  border: 1px solid #eee6f8;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.19);
+  background-color: rgb(244, 242, 239);
+  width: 12rem;
+  height: 25rem;
+}
+
 .card-md:hover {
   background-color: rgb(230, 230, 230);
 }
@@ -270,14 +278,31 @@ img {
 
 .grid-hor {
   display: flex;
-  align-items: center;
   justify-content: space-around;
 }
 
 .grid-hor-f {
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
+}
+
+.grid-hor-f-c {
+  display: flex;
+  align-items: center;
   justify-content: center;
+}
+
+.grid-ver {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid-ver-t {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .grid-3 {
