@@ -4,20 +4,27 @@ import Auth from './components/auth/Auth';
 import Navbar from './components/layout/Navbar';
 import './App.css';
 
+import AuthState from './context/auth/AuthState';
+import MapState from './context/maps/MapState';
+
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const App = () => {
   return (
     <div className="App">
-      <Router>
-        <Fragment>
-          <Navbar />
-          <Switch>
-            <Route exact path='/' component={Main} />
-            <Route exact path='/auth' component={Auth}/>
-          </Switch>
-        </Fragment>
-      </Router>
+      <AuthState>
+        <MapState>
+          <Router>
+            <Fragment>
+              <Navbar />
+              <Switch>
+                <Route exact path='/' component={Main} />
+                <Route exact path='/auth' component={Auth}/>
+              </Switch>
+            </Fragment>
+          </Router>
+        </MapState>
+      </AuthState>
     </div>
   );
 }

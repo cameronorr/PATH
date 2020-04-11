@@ -1,10 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { geolocated } from 'react-geolocated';
-import { ReactDOM } from 'react-dom';
+import MapContext from '../../context/maps/mapContext';
+import AuthContext from '../../context/auth/authContext';
+import { Chart } from 'react-charts';
 
-const Main = ({ carModel, hazardRating, path, google, coords }) => {
+
+const Main = ({ hazardRating, path, google, coords }) => {
+
+    const authContext = useContext(AuthContext);
+
+    const { carModel } = authContext;
+
+    const mapContext = useContext(MapContext);
+
+    const { getHazard, getData } = mapContext;
+
+    let data = [{
+        data: [[0,1], [1,2], [2,4], [3,2], [4,7]]
+    }];
+
+    useEffect(() => {
+        data = getData();
+    });
+
+    const series = React.useMemo(
+        () => ({
+            type: 'bubble',
+            showPoints: false
+        }),
+        []
+    )
+
+    const axes = React.useMemo(
+        () => [
+            { primary: true, type: 'linear', position: 'bottom' },
+            { type: 'linear', position: 'left' }
+        ],
+        []
+    )
 
     const { latitude, longitude } = coords;
 
@@ -37,8 +72,10 @@ const Main = ({ carModel, hazardRating, path, google, coords }) => {
 
     const { curr, dest } = marker;
 
-    const onSubmit = e => 
-        setMarker({ ...marker, [e.target.name]: {lat: lat, long: long} })
+    const onSubmit = e => {
+        setMarker({ ...marker, [e.target.name]: {lat: lat, long: long} });
+        getHazard(curr, dest, carModel);
+    }
 
     return(
         <div className='grid-ver'>
@@ -121,8 +158,16 @@ const Main = ({ carModel, hazardRating, path, google, coords }) => {
                     <body style={{ fontSize: '2rem' }}>{hazardRating}</body>
                 </div>
                 <div>
-                    <h1 className='text-primary' style={{ fontSize: '3rem', fontWeight: 'bolder' }}>Shortest Path</h1>
-                    <body>{path}</body>
+                    <h1 className='text-primary' style={{ fontSize: '3rem', fontWeight: 'bolder' }}>Graphical Representation</h1>
+                    <div className='grid-hor' style={{
+                        width: '32rem',
+                        height: '25rem'
+                    }}
+                    >
+                        <h2>Percent Chance of Crash</h2>
+                        <Chart data={data} series={series} axes={axes} />
+                    </div>
+                    <h2>Weather Value</h2>
                 </div>
             </div>
         </div>
@@ -130,13 +175,11 @@ const Main = ({ carModel, hazardRating, path, google, coords }) => {
 }
 
 Main.propTypes = {
-    carModel: PropTypes.string.isRequired,
     hazardRating: PropTypes.number,
     path: PropTypes.string
 };
 
 Main.defaultProps = {
-    carModel: 'Volkswagen Beetle',
     hazardRating: 0,
     path: ''
 };

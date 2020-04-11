@@ -23,11 +23,12 @@ const AuthState = props => {
         },
         username: null,
         current: '5e486fe27e9ea246d87561d7',
-        loading: true
+        loading: true,
+        carModel: 'Volkswagen Beetle'
     };
     
     const [state, dispatch] = useReducer(authReducer, initialState);
-  
+    
     // Load User
     const loadUser = async () => {
       if (localStorage.token) {
@@ -108,6 +109,7 @@ const AuthState = props => {
           current: state.current,
           isAuthenticated: state.isAuthenticated,
           loading: state.loading,
+          carModel: state.carModel,
           loadUser,
           register,
           getUsername,

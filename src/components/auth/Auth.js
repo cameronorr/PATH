@@ -3,12 +3,14 @@ import logo from './safety-guy.png';
 import check from './checkmark.png';
 import { Redirect } from 'react-router-dom';
 
+import AuthContext from '../../context/auth/authContext';
+
 
 const Auth = () => {
 
     const authContext = useContext(AuthContext);
 
-    const { login, isAuthenticated } = authContext;
+    const { login, isAuthenticated, register } = authContext;
 
     const [user, setUser] = useState({
         email: '',
@@ -39,7 +41,7 @@ const Auth = () => {
         model: ''
     });
 
-    const { newEmail, name, newPassword, confirmPassword } = newUser;
+    const { newEmail, name, newPassword, confirmPassword, model } = newUser;
 
     const onChangeReg = e =>
         setRegInfo({ ...newUser, [e.target.name]: e.target.value });
@@ -58,7 +60,12 @@ const Auth = () => {
         ) {
             console.log('Please fill out all fields.');
         }else {
-            console.log(newEmail, name, newPassword);
+            register({
+                email,
+                name,
+                password,
+                model
+              });
         }
     }
     if(!isAuthenticated){
