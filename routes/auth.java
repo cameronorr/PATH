@@ -5,4 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class auth{
     
+    @PostMapping
+    public registerUser(){
+        
+    }
 }

@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { geolocated } from 'react-geolocated';
 import MapContext from '../../context/maps/mapContext';
-import AuthContext from '../../context/auth/authContext';
 import { Chart } from 'react-charts';
 
 
 const Main = ({ hazardRating, path, google, coords }) => {
-
-    const authContext = useContext(AuthContext);
-
-    const { carModel } = authContext;
 
     const mapContext = useContext(MapContext);
 
@@ -72,6 +67,15 @@ const Main = ({ hazardRating, path, google, coords }) => {
 
     const { curr, dest } = marker;
 
+    const [car, setCar] = useState ({
+        carModel: ''
+    })
+
+    const { carModel } = car;
+
+    const onChangeCar = e => 
+        setCar({ ...car, [e.target.name]: e.target.value });
+
     const onSubmit = e => {
         setMarker({ ...marker, [e.target.name]: {lat: lat, long: long} });
         getHazard(curr, dest, carModel);
@@ -83,7 +87,15 @@ const Main = ({ hazardRating, path, google, coords }) => {
                 <div className='grid-ver-t'>
                     <div style={{ verticalAlign: 'top' }}>
                         <h1 className='text-primary' style={{ fontSize: '3rem', fontWeight: 'bolder' }}>Car Model</h1>
-                        <body style={{ fontSize: '2rem' }}>{carModel}</body>
+                        <input
+                            type='email'
+                            name='carModel'
+                            value={carModel}
+                            placeholder='e.g., Volkswagen Beetle'
+                            onChange={onChangeCar}
+                            required
+                            style={{ marginLeft: 'auto', textAlign: 'right', width: '95%' }}
+                        />
                     </div>
                     <div />
                 </div>
